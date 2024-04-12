@@ -13,13 +13,13 @@ This project develops a software interface that serves as a bridge between a com
 ## Technical Stack
 - Backend: Python, Flask, Docker, Azure (maybe)
 - Frontend: HTML, JavaScript
-- Database: [To be determined]
+- Database: To be determined
 
 ## Data Handling
 The backend will process data received from the chatbot. A search for existing dementia patient data APIs will be conducted. If none are available, we will simulate patient chat data.
 
 ## Contribution
-For contributing, please refer to the issue tracker and pick an open issue related to your skills and interests.
+This project is a collaborative effort between Jiechen (backend (https://github.com/carrieli15/821Biostats_Final/issues/1)) and Yulei (Alicia) (frontend (https://github.com/carrieli15/821Biostats_Final/issues/2)). For contributing, please refer to the issue tracker and pick an open issue related to your skills and interests.
 
 ## Contact
 For any queries or discussions regarding the project, please open an issue in the repository or contact the contributors directly.
