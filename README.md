@@ -1,25 +1,30 @@
-# Companion Chatbot Interface for Healthcare Providers
-821 Biostats Final Project made by Jiechen Li & Yulei (Alicia) Xia
+# Student Information Management System
 
-## Project Overview
-This project develops a software interface that serves as a bridge between a companion chatbot (hardware) and healthcare providers. The interface notifies healthcare providers about potential cognitive issues in patients, indicated by verbal repetition detected by the chatbot.
+## Project Description
+The Student Information Management System is a Python-based application designed to help educational institutions manage student data efficiently. This system allows users to perform various operations such as adding, updating, deleting, and displaying student information, as well as computing and displaying statistics on students' grades.
 
-## Features
-- Real-time alerts for verbal repetitions.
-- Secure and private data handling.
-- Scalable backend architecture using Flask.
-- User-friendly frontend dashboard for healthcare providers.
+## Motivation
+The motivation behind choosing this project was to create a practical tool that could be utilized by educational institutions for better data management. The need for digital solutions in educational administration is growing, and this project aims to provide a user-friendly, efficient way to handle student data.
 
-## Technical Stack
-- Backend: Python, Flask, Docker, Azure (maybe)
-- Frontend: HTML, JavaScript
-- Database: To be determined
+## Functionalities
+- **Data Insertion**: Add new student records with details such as student ID, name, and scores.
+- **Data Deletion**: Remove existing student records.
+- **Data Updating**: Modify details of existing student records.
+- **Data Display**: Show all current student records.
+- **Statistics**: Calculate and display statistics such as average, maximum, and minimum scores.
+- **Data Persistence**: Load and save student data from/to a file.
 
-## Data Handling
-The backend will process data received from the chatbot. A search for existing dementia patient data APIs will be conducted. If none are available, we will simulate patient chat data.
+## Development Plan
+The project will be developed using Python with an object-oriented approach. We will manage the project through GitHub, utilizing issues to track progress. Development will be divided into distinct phases:
+1. **Initial Setup**: Setting up the project structure and basic documentation.
+2. **Core Development**: Implementation of the main functionalities.
+3. **Enhancements and Testing**: Adding additional features and thorough testing.
+4. **Final Review and Deployment**: Code review, final adjustments, and preparation for deployment.
 
-## Contribution
-This project is a collaborative effort between Jiechen (backend (https://github.com/carrieli15/821Biostats_Final/issues/1)) and Yulei (Alicia) (frontend (https://github.com/carrieli15/821Biostats_Final/issues/2)). For contributing, please refer to the issue tracker and pick an open issue related to your skills and interests.
+## Collaborators
+This project is a collaborative effort between Yulei Xia and Jiechen Li. Both collaborators will equally contribute to coding, documentation, and testing phases.
 
-## Contact
-For any queries or discussions regarding the project, please open an issue in the repository or contact the contributors directly.
+## Why Use Our System?
+Our system offers a streamlined interface and robust functionality designed specifically for educational environments. It is adaptable, easy to use, and scalable for various educational settings.
+
+
