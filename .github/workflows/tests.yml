@@ -128,6 +128,7 @@ jobs:
 
     - name: Run tests and generate report
       run: |
+        pip install pytest
         pytest tests/ --junitxml=test_report.txt
     - name: List files
       run: ls -la
