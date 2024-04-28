@@ -1,9 +1,40 @@
-import datetime
+"""Tests for the student management system.
+
+These tests cover the functionality of the StudentManager and StudentList
+classes,which are responsible for managing student data stored in a SQLite
+database.
+
+Attributes:
+    student_manager (pytest.fixture): Fixture providing an instance of
+    StudentManager with a fresh database for testing.
+    load_data (pytest.fixture): Fixture that loads test data into the fresh
+    database. It uses the student_manager fixture.
+    tmp_path (pytest.fixture): Fixture providing a temporary directory path
+    for testing.
+
+Tests:
+    - `test_student_data_insertion`: Verifies correct insertion of student
+       data intonthe database.
+    - `test_insert_and_retrieve_complete_data`: Tests full retrieval of a
+       student'sdata using the StudentList class.
+    - `test_invalid_student_id`: Tests handling of non-existent student IDs.
+    - `test_insert_invalid_data_types`: Ensures graceful handling of incorrect
+       data types.
+    - `test_update_student_record`: Tests updating a student's record.
+    - `test_delete_student_record`: Tests deleting a student's record.
+    - `test_invalid_update_student_record`: Tests updating a non-existent
+       student's record.
+    - `test_invalid_delete_student_record`: Tests deleting a non-existent
+       student's record.
+    - `test_export_data`: Tests exporting student data to a TSV file.
+"""
+
 import sqlite3
-from typing import Generator
 from pathlib import Path
+from typing import Generator
+
 import pytest
-from src.student import StudentManager, StudentList
+from student import StudentList, StudentManager
 
 
 # For the student_manager fixture

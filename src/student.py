@@ -1,3 +1,17 @@
+"""Module for managing student information stored in a SQLite database.
+
+This module provides classes and functions for interacting with student data
+stored in a SQLite database. The main classes included in this module are:
+
+- `StudentManager`: A class for managing student information in the database,
+  including methods for creating tables, parsing data from TSV files,
+  inserting,updating, deleting, exporting student records, etc.
+
+- `StudentList`: A class representing a list of all students in the database,
+  providing methods to retrieve specific attributes of a student.
+
+"""
+
 import sqlite3
 from datetime import datetime
 from typing import Any
@@ -336,55 +350,55 @@ class StudentList:
 
 
 # just for test
-def main():
-    # Path to the SQLite database file
-    db_path = "student.db"
+# def main():
+#     # Path to the SQLite database file
+#     db_path = "student.db"
 
-    # Initialize the StudentManager
-    manager = StudentManager(db_path)
+#     # Initialize the StudentManager
+#     manager = StudentManager(db_path)
 
-    # Parse student data from a TSV file into the database
-    student_filename = "student.tsv"
-    manager.parse_data(student_filename)
-    student_id = "58452"
+#     # Parse student data from a TSV file into the database
+#     student_filename = "student.tsv"
+#     manager.parse_data(student_filename)
+#     student_id = "58452"
 
-    # Check if the student exists using the StudentList class
-    with manager.connect() as conn:
-        student = StudentList(conn, student_id)
-        if student.student_id:
-            print(
-                f"Student {student_id} found. Current English grade:"
-                f" {student.student_english}"
-            )
-        else:
-            print(f"Student {student_id} not found. Check the data file.")
-            return  # Exit if student not found to avoid further errors
+#     # Check if the student exists using the StudentList class
+#     with manager.connect() as conn:
+#         student = StudentList(conn, student_id)
+#         if student.student_id:
+#             print(
+#                 f"Student {student_id} found. Current English grade:"
+#                 f" {student.student_english}"
+#             )
+#         else:
+#             print(f"Student {student_id} not found. Check the data file.")
+#             return  # Exit if student not found to avoid further errors
 
-    # Update the student's English grade
-    new_english_grade = 95  # New grade to update
-    print("Updating the student's English grade...")
-    if manager.update_student(student_id, English=new_english_grade):
-        print("Update successful!")
-    else:
-        print("Update failed.")
+#     # Update the student's English grade
+#     new_english_grade = 95  # New grade to update
+#     print("Updating the student's English grade...")
+#     if manager.update_student(student_id, English=new_english_grade):
+#         print("Update successful!")
+#     else:
+#         print("Update failed.")
 
-    # Re-check the updated details
-    with manager.connect() as conn:
-        student = StudentList(conn, student_id)
-        print(
-            f"After update, English grade for student {student_id}:"
-            f"{student.student_english}"
-        )
-    # demonstrate deletion
-    print("Deleting the student for cleanup...")
-    if manager.delete_student(student_id):
-        print(f"Student {student_id} successfully deleted.")
-    else:
-        print("Failed to delete the student.")
-    # Export data to a TSV file
-    export_filename = "new_student.tsv"
-    manager.export_data(export_filename)
+#     # Re-check the updated details
+#     with manager.connect() as conn:
+#         student = StudentList(conn, student_id)
+#         print(
+#             f"After update, English grade for student {student_id}:"
+#             f"{student.student_english}"
+#         )
+#     # demonstrate deletion
+#     print("Deleting the student for cleanup...")
+#     if manager.delete_student(student_id):
+#         print(f"Student {student_id} successfully deleted.")
+#     else:
+#         print("Failed to delete the student.")
+#     # Export data to a TSV file
+#     export_filename = "new_student.tsv"
+#     manager.export_data(export_filename)
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
