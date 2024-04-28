@@ -126,10 +126,12 @@ jobs:
           pip install -r requirements.txt
         fi
 
-    - name: Run tests
+    - name: Run tests and generate report
       run: |
-        pip install pytest 
-        pytest tests/
+        pytest tests/ --junitxml=test_report.txt
+    - name: List files
+      run: ls -la
+        
 
     - name: Print report
       run: cat test_report.txt
