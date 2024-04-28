@@ -349,7 +349,7 @@ class StudentList:
 #     """Strat from here."""
 
 
-# just for test
+# # just for test
 # def main():
 #     # Path to the SQLite database file
 #     db_path = "student.db"
