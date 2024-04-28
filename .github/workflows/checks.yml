@@ -26,6 +26,13 @@ jobs:
         ruff check $(git ls-files '*.py')
         ruff format --check $(git ls-files '*.py')
         mypy $(git ls-files '*.py')
+        
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: List directory contents and show file    
+      run: |  
         pwd
         ls -la
         cat test_report.txt
