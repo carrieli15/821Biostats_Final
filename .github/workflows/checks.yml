@@ -27,9 +27,4 @@ jobs:
         ruff format --check $(git ls-files '*.py')
         mypy $(git ls-files '*.py')
 
-    - name: List directory contents and show file    
-      run: |  
-        pwd
-        ls -la
-        cat test_report.txt
         
