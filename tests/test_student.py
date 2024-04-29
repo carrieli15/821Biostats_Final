@@ -34,7 +34,7 @@ from pathlib import Path
 from typing import Generator
 
 import pytest
-from student import StudentList, StudentManager
+from student import Grades, StudentList, StudentManager
 
 
 # For the student_manager fixture
@@ -205,3 +205,22 @@ def test_export_data(student_manager: StudentManager, tmp_path: Path) -> None:
 
     # Check if the file is not empty
     assert filename.stat().st_size > 0, "Exported file is empty"
+
+
+def test_max_score(student_manager: StudentManager, load_data: None) -> None:
+    """Tests the maximum score calculation for a specific subject."""
+    max_math_score = student_manager.grades.get_max_score("Math")
+    assert max_math_score == 99, "Incorrect max score"
+
+
+def test_min_score(student_manager: StudentManager, load_data: None) -> None:
+    """Tests the minimum score calculation for a specific subject."""
+    min_math_score = student_manager.grades.get_min_score("Math")
+    assert min_math_score == 77, "Incorrect min score"
+
+
+def test_avg_score(student_manager: StudentManager, load_data: None) -> None:
+    """Tests the average score calculation for a specific subject."""
+    avg_math_score = student_manager.grades.get_avg_score("Math")
+    expected_avg = 88.2  # Adjust this expected average based on your test data
+    assert abs(avg_math_score - expected_avg) < 0.01, "Incorrect average score"

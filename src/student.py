@@ -28,6 +28,8 @@ class StudentManager:
         """
         self.db_path = db_path
         self.create_tables()
+        self.grades = Grades(self.connect())
+        self.connection = None
 
     def connect(self) -> sqlite3.Connection:
         """Establishes a connection to the SQLite database.
@@ -361,49 +363,25 @@ class Grades:
         self.connection = connection
 
     def get_max_score(self, subject: str) -> int:
-        """Returns the maximum score for a given subject.
-
-        Args:
-            subject (str): The subject to query the maximum score for.
-
-        Returns:
-            int: The highest score found in the database for
-            the specified subject.
-        """
+        """Returns the maximum score for a given subject."""
         cursor = self.connection.cursor()
         cursor.execute(f"SELECT MAX({subject}) FROM student")
         result = cursor.fetchone()
-        return int(result[0]) if result and result[0] is not None else -1
+        return int(result[0]) if result[0] is not None else None  # type: ignore
 
     def get_min_score(self, subject: str) -> int:
-        """Returns the minimum score for a given subject.
-
-        Args:
-            subject (str): The subject to query the minimum score for.
-
-        Returns:
-            int: The lowest score found in the database
-            for the specified subject.
-        """
+        """Returns the minimum score for a given subject."""
         cursor = self.connection.cursor()
         cursor.execute(f"SELECT MIN({subject}) FROM student")
         result = cursor.fetchone()
-        return int(result[0]) if result and result[0] is not None else -1
+        return int(result[0]) if result[0] is not None else None  # type: ignore
 
     def get_avg_score(self, subject: str) -> float:
-        """Returns the average score for a given subject.
-
-        Args:
-            subject (str): The subject to query the average score for.
-
-        Returns:
-            float: The average score found in the database
-            for the specified subject.
-        """
+        """Returns the average score for a given subject."""
         cursor = self.connection.cursor()
         cursor.execute(f"SELECT AVG({subject}) FROM student")
         result = cursor.fetchone()
-        return float(result[0]) if result and result[0] is not None else 0.0
+        return float(result[0]) if result[0] is not None else None  # type: ignore
 
 
 # just for test
@@ -456,6 +434,10 @@ def main():
     # Export data to a TSV file
     export_filename = "new_student.tsv"
     manager.export_data(export_filename)
+
+    # Example usage of the Grades class through StudentManager
+    max_score = manager.grades.get_max_score("English")
+    print(f"Maximum English score: {max_score}")
 
 
 if __name__ == "__main__":
