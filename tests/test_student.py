@@ -27,6 +27,12 @@ Tests:
     - `test_invalid_delete_student_record`: Tests deleting a non-existent
        student's record.
     - `test_export_data`: Tests exporting student data to a TSV file.
+    - `test_max_score`: Tests the maximum score calculation for a specific
+         subject.
+    - `test_min_score`: Tests the minimum score calculation for a specific
+            subject.
+    - `test_avg_score`: Tests the average score calculation for a specific
+            subject.
 """
 
 import sqlite3
@@ -34,7 +40,7 @@ from pathlib import Path
 from typing import Generator
 
 import pytest
-from student import Grades, StudentList, StudentManager
+from student import StudentList, StudentManager
 
 
 # For the student_manager fixture

@@ -353,7 +353,7 @@ class Grades:
     and average scores for a subject.
     """
 
-    def __init__(self, connection: sqlite3.Connection):
+    def __init__(self, connection: sqlite3.Connection):  # noqa: D417
         """Initializes the Grades object with a database connection.
 
         Args:
