@@ -345,60 +345,118 @@ class StudentList:
 
 
 # this class is going to calculate max, min and mean for students' grade
-# class Grades:
-#     """Strat from here."""
+class Grades:
+    """Class to calculate the maximum, minimum.
+
+    and average scores for a subject.
+    """
+
+    def __init__(self, connection: sqlite3.Connection):
+        """Initializes the Grades object with a database connection.
+
+        Args:
+            connection (sqlite3.Connection):
+            A connection to the SQLite database.
+        """
+        self.connection = connection
+
+    def get_max_score(self, subject: str) -> int:
+        """Returns the maximum score for a given subject.
+
+        Args:
+            subject (str): The subject to query the maximum score for.
+
+        Returns:
+            int: The highest score found in the database for
+            the specified subject.
+        """
+        cursor = self.connection.cursor()
+        cursor.execute(f"SELECT MAX({subject}) FROM student")
+        result = cursor.fetchone()
+        return int(result[0]) if result and result[0] is not None else -1
+
+    def get_min_score(self, subject: str) -> int:
+        """Returns the minimum score for a given subject.
+
+        Args:
+            subject (str): The subject to query the minimum score for.
+
+        Returns:
+            int: The lowest score found in the database
+            for the specified subject.
+        """
+        cursor = self.connection.cursor()
+        cursor.execute(f"SELECT MIN({subject}) FROM student")
+        result = cursor.fetchone()
+        return int(result[0]) if result and result[0] is not None else -1
+
+    def get_avg_score(self, subject: str) -> float:
+        """Returns the average score for a given subject.
+
+        Args:
+            subject (str): The subject to query the average score for.
+
+        Returns:
+            float: The average score found in the database
+            for the specified subject.
+        """
+        cursor = self.connection.cursor()
+        cursor.execute(f"SELECT AVG({subject}) FROM student")
+        result = cursor.fetchone()
+        return float(result[0]) if result and result[0] is not None else 0.0
 
 
-# # just for test
-# def main():
-#     # Path to the SQLite database file
-#     db_path = "student.db"
+# just for test
+def main():
+    """Main function to demonstrate the usage of the StudentManager class."""
+    # Path to the SQLite database file
+    db_path = "student.db"
 
-#     # Initialize the StudentManager
-#     manager = StudentManager(db_path)
+    # Initialize the StudentManager
+    manager = StudentManager(db_path)
 
-#     # Parse student data from a TSV file into the database
-#     student_filename = "student.tsv"
-#     manager.parse_data(student_filename)
-#     student_id = "58452"
+    # Parse student data from a TSV file into the database
+    student_filename = "student.tsv"
+    manager.parse_data(student_filename)
+    student_id = "58452"
 
-#     # Check if the student exists using the StudentList class
-#     with manager.connect() as conn:
-#         student = StudentList(conn, student_id)
-#         if student.student_id:
-#             print(
-#                 f"Student {student_id} found. Current English grade:"
-#                 f" {student.student_english}"
-#             )
-#         else:
-#             print(f"Student {student_id} not found. Check the data file.")
-#             return  # Exit if student not found to avoid further errors
+    # Check if the student exists using the StudentList class
+    with manager.connect() as conn:
+        student = StudentList(conn, student_id)
+        if student.student_id:
+            print(
+                f"Student {student_id} found. Current English grade:"
+                f" {student.student_english}"
+            )
+        else:
+            print(f"Student {student_id} not found. Check the data file.")
+            return  # Exit if student not found to avoid further errors
 
-#     # Update the student's English grade
-#     new_english_grade = 95  # New grade to update
-#     print("Updating the student's English grade...")
-#     if manager.update_student(student_id, English=new_english_grade):
-#         print("Update successful!")
-#     else:
-#         print("Update failed.")
+    # Update the student's English grade
+    new_english_grade = 95  # New grade to update
+    print("Updating the student's English grade...")
+    if manager.update_student(student_id, English=new_english_grade):
+        print("Update successful!")
+    else:
+        print("Update failed.")
 
-#     # Re-check the updated details
-#     with manager.connect() as conn:
-#         student = StudentList(conn, student_id)
-#         print(
-#             f"After update, English grade for student {student_id}:"
-#             f"{student.student_english}"
-#         )
-#     # demonstrate deletion
-#     print("Deleting the student for cleanup...")
-#     if manager.delete_student(student_id):
-#         print(f"Student {student_id} successfully deleted.")
-#     else:
-#         print("Failed to delete the student.")
-#     # Export data to a TSV file
-#     export_filename = "new_student.tsv"
-#     manager.export_data(export_filename)
+    # Re-check the updated details
+    with manager.connect() as conn:
+        student = StudentList(conn, student_id)
+        print(
+            f"After update, English grade for student {student_id}:"
+            f"{student.student_english}"
+        )
+    # demonstrate deletion
+    print("Deleting the student for cleanup...")
+    if manager.delete_student(student_id):
+        print(f"Student {student_id} successfully deleted.")
+    else:
+        print("Failed to delete the student.")
+    # Export data to a TSV file
+    export_filename = "new_student.tsv"
+    manager.export_data(export_filename)
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
