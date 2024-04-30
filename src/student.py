@@ -172,8 +172,8 @@ class StudentManager:
         # Check if student ID already exists in the database
         if self.check_student(student_data["ID"]):
             raise sqlite3.IntegrityError(
-                f"UNIQUE constraint failed: student.ID for ID {
-                    student_data['ID']} already exists."
+                f"UNIQUE constraint failed: student.ID for"
+                f"ID {student_data['ID']} already exists."
             )
             # If all data types are valid, insert the student into the database
         with self.connect() as conn:
