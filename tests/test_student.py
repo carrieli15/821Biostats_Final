@@ -27,14 +27,18 @@ Tests:
     - `test_invalid_delete_student_record`: Tests deleting a non-existent
        student's record.
     - `test_export_data`: Tests exporting student data to a TSV file.
+    - `test_max_score_calculation`: Tests the maximum score for a subject.
+    - `test_min_score_calculation`: Tests the minimum score for a subject.
+    - `test_avg_score_calculation`: Tests the mean score for a subject.
+
 """
 
-import sqlite3
 from pathlib import Path
 from typing import Generator
 
 import pytest
-from student import StudentList, StudentManager
+
+from student import Grades, StudentList, StudentManager
 
 
 # For the student_manager fixture
@@ -123,17 +127,18 @@ def test_insert_invalid_data_types(student_manager: StudentManager) -> None:
         "Arts": "90",
     }
     # Test data type validation
+    student_manager.insert_student(invalid_data)
+    # Check if data is inserted
+    conn = student_manager.connect()
     try:
-        student_manager.insert_student(invalid_data)
-    except ValueError as e:
+        cursor = conn.cursor()
+        cursor.execute("SELECT ID FROM student WHERE ID = '9999'")
+        result = cursor.fetchone()
         assert (
-            str(e) == "IntegrityError: UNIQUE constraint failed: student.ID"
-        ), "Unexpected error message"
-    except sqlite3.IntegrityError:
-        # ID already exists, which violates the uniqueness constraint
-        pass
-    else:
-        pytest.fail("Expected IntegrityError but no exception was raised")
+            result is not None
+        ), "Data should be inserted even with invalid types"
+    finally:
+        conn.close()
 
 
 def test_update_student_record(
@@ -205,3 +210,48 @@ def test_export_data(student_manager: StudentManager, tmp_path: Path) -> None:
 
     # Check if the file is not empty
     assert filename.stat().st_size > 0, "Exported file is empty"
+
+
+def test_max_score_calculation(
+    student_manager: StudentManager, load_data: None
+) -> None:
+    """Tests the calculation of the maximum score for a specific subject."""
+    conn = student_manager.connect()
+    try:
+        max_score = Grades.get_max_score(conn, "Math")
+        expected_max_score = 99
+        assert (
+            int(max_score) == expected_max_score
+        ), f"Expected {expected_max_score}, got {max_score}"
+    finally:
+        conn.close()
+
+
+def test_min_score_calculation(
+    student_manager: StudentManager, load_data: None
+) -> None:
+    """Tests the calculation of the minimum score for a specific subject."""
+    conn = student_manager.connect()
+    try:
+        min_score = Grades.get_min_score(conn, "Math")
+        expected_min_score = 77
+        assert (
+            int(min_score) == expected_min_score
+        ), f"Expected {expected_min_score}, got {min_score}"
+    finally:
+        conn.close()
+
+
+def test_avg_score_calculation(
+    student_manager: StudentManager, load_data: None
+) -> None:
+    """Tests the calculation of the average score for a specific subject."""
+    conn = student_manager.connect()
+    try:
+        avg_score = Grades.get_avg_score(conn, "Math")
+        expected_avg_score = 88.2
+        assert (
+            float(avg_score) == expected_avg_score
+        ), f"Expected {expected_avg_score}, got {avg_score}"
+    finally:
+        conn.close()

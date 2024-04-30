@@ -10,6 +10,14 @@ stored in a SQLite database. The main classes included in this module are:
 - `StudentList`: A class representing a list of all students in the database,
   providing methods to retrieve specific attributes of a student.
 
+- `Grades`: A class designed to calculate statistical measures such as maximum,
+  minimum, and average scores for various subjects across all students stored
+  in the database.
+
+These classes collectively support the management and analysis of student
+records,enabling effective data handling and reporting within educational
+institutions.
+
 """
 
 import sqlite3
@@ -93,6 +101,42 @@ class StudentManager:
                 )
             conn.commit()
 
+    def get_student_by_id(self, student_id: str):
+        """Fetches a student by their ID from the database.
+
+        Args:
+            student_id (str): The ID of the student to fetch.
+
+        Returns:
+            dict or None: A dictionary of the student's details if found,
+            otherwise None.
+        """
+        with self.connect() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                SELECT ID, Name, Gender, Enroll_Date, English, Math, History, 
+                Science, Arts
+                FROM student
+                WHERE ID = ?
+            """,
+                (student_id,),
+            )
+            row = cursor.fetchone()
+            if row:
+                return {
+                    "ID": row[0],
+                    "Name": row[1],
+                    "Gender": row[2],
+                    "Enroll_Date": row[3],
+                    "English": row[4],
+                    "Math": row[5],
+                    "History": row[6],
+                    "Science": row[7],
+                    "Arts": row[8],
+                }
+        return None
+
     def insert_student(self, student_data: dict) -> None:
         """Inserts a new student into the database.
 
@@ -125,27 +169,32 @@ class StudentManager:
                     f"Invalid data type for {key}: expected"
                     f"{expected_types[key]}, got {type(value)}"
                 )
-
+        # Check if student ID already exists in the database
+        if self.check_student(student_data["ID"]):
+            raise sqlite3.IntegrityError(
+                f"UNIQUE constraint failed: student.ID for ID {\
+                    student_data['ID']} already exists."
+            )
             # If all data types are valid, insert the student into the database
-            with self.connect() as conn:
-                cursor = conn.cursor()
-                cursor.execute(
-                    "INSERT INTO student (ID, Name, Gender, Enroll_Date,"
-                    "English, Math, History, Science, Arts) "
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    (
-                        student_data.get("ID"),
-                        student_data.get("Name"),
-                        student_data.get("Gender"),
-                        student_data.get("Enroll_Date"),
-                        student_data.get("English"),
-                        student_data.get("Math"),
-                        student_data.get("History"),
-                        student_data.get("Science"),
-                        student_data.get("Arts"),
-                    ),
-                )
-                conn.commit()
+        with self.connect() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO student (ID, Name, Gender, Enroll_Date,"
+                "English, Math, History, Science, Arts) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    student_data.get("ID"),
+                    student_data.get("Name"),
+                    student_data.get("Gender"),
+                    student_data.get("Enroll_Date"),
+                    student_data.get("English"),
+                    student_data.get("Math"),
+                    student_data.get("History"),
+                    student_data.get("Science"),
+                    student_data.get("Arts"),
+                ),
+            )
+            conn.commit()
 
     def delete_student(self, student_id: str) -> bool:
         """Deletes a student from the database based on their ID.
@@ -344,61 +393,62 @@ class StudentList:
         return self._getattribute_("Arts")
 
 
-# this class is going to calculate max, min and mean for students' grade
-# class Grades:
-#     """Strat from here."""
+class Grades:
+    """Provides statistical calculations for student scores.
 
+    This class offers methods to calculate the maximum, minimum, and average
+    scores for a specific subject within a database of student records.
+    """
 
-# # just for test
-# def main():
-#     # Path to the SQLite database file
-#     db_path = "student.db"
+    @staticmethod
+    def get_max_score(connection, subject: str) -> int:
+        """Retrieve the highest score for a specified subject.
 
-#     # Initialize the StudentManager
-#     manager = StudentManager(db_path)
+        Args:
+            connection (sqlite3.Connection): The database connection object.
+            subject (str): The subject name whose max score is to be retrieved.
 
-#     # Parse student data from a TSV file into the database
-#     student_filename = "student.tsv"
-#     manager.parse_data(student_filename)
-#     student_id = "58452"
+        Returns:
+            int or None: The highest score found in the subject, or None if no
+            scores are available.
+        """
+        cursor = connection.cursor()
+        cursor.execute(f"SELECT MAX({subject}) FROM student")
+        result = cursor.fetchone()
+        return (result[0]) if result[0] is not None else None
 
-#     # Check if the student exists using the StudentList class
-#     with manager.connect() as conn:
-#         student = StudentList(conn, student_id)
-#         if student.student_id:
-#             print(
-#                 f"Student {student_id} found. Current English grade:"
-#                 f" {student.student_english}"
-#             )
-#         else:
-#             print(f"Student {student_id} not found. Check the data file.")
-#             return  # Exit if student not found to avoid further errors
+    @staticmethod
+    def get_min_score(connection, subject: str) -> int:
+        """Fetch the lowest score for a specified subject.
 
-#     # Update the student's English grade
-#     new_english_grade = 95  # New grade to update
-#     print("Updating the student's English grade...")
-#     if manager.update_student(student_id, English=new_english_grade):
-#         print("Update successful!")
-#     else:
-#         print("Update failed.")
+        Args:
+            connection (sqlite3.Connection): The database connection object.
+            subject (str): The subject name whose min score is to be retrieved.
 
-#     # Re-check the updated details
-#     with manager.connect() as conn:
-#         student = StudentList(conn, student_id)
-#         print(
-#             f"After update, English grade for student {student_id}:"
-#             f"{student.student_english}"
-#         )
-#     # demonstrate deletion
-#     print("Deleting the student for cleanup...")
-#     if manager.delete_student(student_id):
-#         print(f"Student {student_id} successfully deleted.")
-#     else:
-#         print("Failed to delete the student.")
-#     # Export data to a TSV file
-#     export_filename = "new_student.tsv"
-#     manager.export_data(export_filename)
+        Returns:
+            int or None: The lowest score found in the subject, or None if no
+            scores are available.
+        """
+        cursor = connection.cursor()
+        cursor.execute(f"SELECT MIN({subject}) FROM student")
+        result = cursor.fetchone()
+        return (result[0]) if result[0] is not None else None
 
+    @staticmethod
+    def get_avg_score(connection, subject: str) -> float:
+        """Calculate the average score for a specified subject.
 
-# if __name__ == "__main__":
-#     main()
+        Args:
+            connection (sqlite3.Connection): The database connection object.
+            subject (str): The subject name whose average score is to be
+            calculated.
+
+        Returns:
+            float or None: The average score as a floating-point number
+            rounded to two decimal places,
+            or None if no scores are available.
+        """
+        cursor = connection.cursor()
+        cursor.execute(f"SELECT AVG({subject}) FROM student")
+        result = cursor.fetchone()
+        return round(result[0], 2) if result[0] is not None else None
