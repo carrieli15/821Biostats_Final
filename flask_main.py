@@ -1,6 +1,24 @@
+"""A Flask web application for managing student data.
+
+This script initializes a Flask application to manage student records stored
+in a SQLite database. It provides web routes for displaying student
+information, adding new student records, updating existing records,
+and deleting students. The application uses templates for rendering HTML
+responses.
+
+Modules:
+- sqlite3: For database operations.
+- Flask: For creating and running the web application.
+- render_template, request: From Flask, for rendering templates and handling
+requests.
+- Grades, StudentManager: Custom modules for handling student data operations
+and calculations.
+"""
+
 import sqlite3
-from flask import Flask, render_template, request, url_for, redirect
-from src.student import StudentList, StudentManager, Grades
+
+from flask import Flask, render_template, request
+from student import Grades, StudentManager
 
 app = Flask(__name__, template_folder="frontend")
 
@@ -12,12 +30,13 @@ student_manager.parse_data(student_filename)
 
 @app.route("/")
 def home():
-    # Renders the home.html template from the 'frontend' folder
+    """Render the home page."""
     return render_template("home.html")
 
 
 @app.route("/student", methods=["POST"])
 def show_student():
+    """Display student information or an error message."""
     student_id = request.form.get("student_id")
     with student_manager.connect() as conn:
         student_info = student_manager.get_student_by_id(student_id)
@@ -56,6 +75,7 @@ def show_student():
 
 @app.route("/add_student", methods=["POST"])
 def add_student():
+    """Add a new student to the database and display result."""
     student_data = {
         "ID": request.form.get("ID"),
         "Name": request.form.get("Name"),
@@ -81,6 +101,7 @@ def add_student():
 
 @app.route("/update_student/<student_id>", methods=["POST"])
 def update_student(student_id):
+    """Update specific student data and display the result."""
     field = request.form.get("field")
     new_value = request.form.get("new_value")
     updates = {field: new_value}
@@ -95,6 +116,7 @@ def update_student(student_id):
 
 @app.route("/delete_student/<student_id>", methods=["GET"])
 def delete_student(student_id):
+    """Delete a student from the database and display the result."""
     if student_manager.delete_student(student_id):
         print(f"Student {student_id} successfully deleted.")
         error_message = f"Student {student_id} successfully deleted."
