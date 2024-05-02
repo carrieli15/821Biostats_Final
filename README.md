@@ -2,13 +2,83 @@
 
  *Biostats Final Project by Jiechen Li, and Yulei Xia*
 
+This project develops a Python-based application to efficiently manage student information for educational institutions. It supports operations like adding, updating, deleting, and displaying student data, along with calculating grade statistics. The system integrates with a SQLite database and utilizes Flask for web functionality, ensuring a robust backend and user-friendly front end.
+
 ## Project Goals
 
-The student information management system is a Python-based application designed to help educational institutions manage student data efficiently. This system allows users to perform various operations such as adding, updating, deleting, and displaying student information, as well as computing and displaying statistics on students' grades.
+- **Develop robust data management algorithms**: Utilize Python with SQLite to implement efficient data management practices.
+
+- **Enable detailed statistical analysis**: Provide tools for calculating and visualizing grade statistics across various subjects.
+
+- **Enhance user interaction**: Deliver an straightforward web interface for easy interaction with student data.
+
+## System Overview
+
+The system comprises several Python classes designed to handle different aspects of student data management:
+
+- **`StudentManager`**: Manages student information within the database. This class handles tasks such as creating tables, parsing data from TSV files, and performing CRUD operations on student records.
+
+- **`StudentList`**: Represents a comprehensive list of all students in the database. It is utilized to retrieve specific attributes for any student, facilitating detailed data queries and interactions.
+
+- **`Grades`**: Calculates statistical measures such as maximum, minimum, and average scores for various subjects, aiding in the academic assessment of students.
+
+These components ensure that the system not only manages but also thoroughly analyzes student data, providing crucial insights for educational institutions.
 
 ## Demo Link
 
-Please click this [link](https://youtu.be/MWvYG-0WMzs) to watch our project walk-through video.
+Watch our project walk-through video [here](https://youtu.be/MWvYG-0WMzs).
+
+## Project Flow Chart
+
+<img decoding="async" src="result_img/flow_chart.png" width="100%"><br>  
+
+## Setup and Installation
+
+Ensure you have Python 3.x installed along with pip. This project also requires Flask and SQLite.
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/carrieli15/821Biostats_Final.git
+   ```
+
+2. **Navigate to the project directory:**
+
+   ```bash
+    cd Student-Information-Management-System
+   ```
+
+3. **Install dependencies:**
+
+   ```bash
+    pip install -r requirements.txt
+   ```
+
+## Running Tests
+
+1. **To run tests and verify system integrity:**
+
+   ```bash
+    pytest
+   ```
+
+2. **To check code quality using Ruff:**
+
+   ```bash
+     ruff check $(git ls-files '*.py')
+     ruff format --check $(git ls-files '*.py')
+     mypy $(git ls-files '*.py')
+   ```
+
+## Using the System
+
+1. **Start the Flask application:**
+
+   ```bash
+    flask run
+   ```
+
+2. **Access the web interface at <http://127.0.0.1:5000/> to interact with the student data.**
 
 ## Building the Database
 
@@ -30,30 +100,40 @@ Please click this [link](https://youtu.be/MWvYG-0WMzs) to watch our project walk
 
 **Step 9**: Develop HTML and JavaScript files for website rendering.
 
-## Using Student Information Management System
+## Example Screenshots
 
-* Select the student's ID you are interested in.
+Detailed steps on how to ``add``, ``update``, ``delete``, and ``view`` student information are provided through our web interface.
+
+**Select the student's ID you are interested in.**
 
 **Check a student by ID**:
-<img decoding="async" src="display_1.png" width="100%"><br>  
+<img decoding="async" src="result_img/display_1.png" width="100%"><br>  
 
-<img decoding="async" src="display_2.png" width="100%"><br>
+<img decoding="async" src="result_img/display_2.png" width="100%"><br>
 
 **Update the student's grade of any subject**:
-<img decoding="async" src="update_1.png" width="100%"><br>
+<img decoding="async" src="result_img/update_1.png" width="100%"><br>
 
-<img decoding="async" src="update_2.png" width="100%"><br>
+<img decoding="async" src="result_img/update_2.png" width="100%"><br>
 
-<img decoding="async" src="update_3.png" width="100%"><br>
+<img decoding="async" src="result_img/update_3.png" width="100%"><br>
 
 **Delete a student's information**:
-<img decoding="async" src="delete_1.png" width="100%"><br>  
+<img decoding="async" src="result_img/delete_1.png" width="100%"><br>  
 
-<img decoding="async" src="delete_2.png" width="100%"><br>  
+<img decoding="async" src="result_img/delete_2.png" width="100%"><br>  
 
 **Add a new student's information**:
-<img decoding="async" src="insertion_1.png" width="100%"><br>  
+<img decoding="async" src="result_img/insertion_1.png" width="100%"><br>  
 
-<img decoding="async" src="insertion_2.png" width="100%"><br>  
+<img decoding="async" src="result_img/insertion_2.png" width="100%"><br>  
 
-<img decoding="async" src="insertion_3.png" width="100%"><br>  
+<img decoding="async" src="result_img/insertion_3.png" width="100%"><br>  
+
+## Contributions
+
+Contributions are welcome! Please fork the repository and submit pull requests to the `develop` branch.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
