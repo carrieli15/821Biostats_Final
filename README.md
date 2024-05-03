@@ -14,11 +14,11 @@ This project develops a Python-based application to efficiently manage student i
 
 ## System Overview
 
-The system comprises several Python classes designed to handle different aspects of student data management:
+The system includes several Python classes in ``src/student.py`` designed to handle different aspects of student data management:
 
 - **`StudentManager`**: Manages student information within the database. This class handles tasks such as creating tables, parsing data from TSV files, and performing CRUD operations on student records.
 
-- **`StudentList`**: Represents a comprehensive list of all students in the database. It is utilized to retrieve specific attributes for any student, facilitating detailed data queries and interactions.
+- **`StudentList`**: Represents a comprehensive list of all students in the database. It is utilized to retrieve specific attributes for any student.
 
 - **`Grades`**: Calculates statistical measures such as maximum, minimum, and average scores for various subjects, aiding in the academic assessment of students.
 
@@ -26,7 +26,7 @@ These components ensure that the system not only manages but also thoroughly ana
 
 ## Demo Link
 
-Watch our project walk-through video [here](https://youtu.be/MWvYG-0WMzs).
+Please watch the project walk-through video [here](https://youtu.be/MWvYG-0WMzs).
 
 ## Project Flow Chart
 
